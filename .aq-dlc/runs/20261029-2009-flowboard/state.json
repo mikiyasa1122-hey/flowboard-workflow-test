@@ -2,12 +2,286 @@
   "run_id": "20261029-2009-flowboard",
   "title": "flowboard",
   "status": "in_progress",
-  "phase": "00_start",
+  "phase": "02_failure_first",
   "created": "2026-10-29T20:09:44+09:00",
   "awaiting_human": false,
   "question": "",
   "memory_loaded": [],
-  "requirements": [],
+  "requirements": [
+    {
+      "id": "R1",
+      "critical": true,
+      "text": "タスクCRUD（作成/表示/編集/削除/ステータス/優先度/期限/タグ、作成・更新・完了日時の自動記録）。不正データは保存しない。削除は確認ダイアログ",
+      "risks": [
+        {
+          "id": "K1",
+          "text": "title空/81文字以上・description501文字・tags6件以上・不正status等が保存される",
+          "verifications": [
+            {
+              "id": "V1",
+              "method": "Zodスキーマ境界値の単体テスト",
+              "command": "npx vitest run src/domain/task.test.ts"
+            }
+          ]
+        },
+        {
+          "id": "K2",
+          "text": "更新時にcreatedAtが変わる/updatedAtが更新されない/done→戻した時completedAtが残る",
+          "verifications": [
+            {
+              "id": "V2",
+              "method": "タスク操作関数の単体テスト",
+              "command": "npx vitest run src/domain/taskOps.test.ts"
+            }
+          ]
+        },
+        {
+          "id": "K3",
+          "text": "確認なしで削除される・UI上の無効入力が保存される",
+          "verifications": [
+            {
+              "id": "V3",
+              "method": "E2E: 削除確認と無効入力",
+              "command": "npx playwright test e2e/validation.spec.ts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R2",
+      "critical": true,
+      "text": "カンバン3列（TODO/DOING/DONE）、件数・優先度表示・期限超過強調・空状態、ステータス変更で即時移動",
+      "risks": [
+        {
+          "id": "K4",
+          "text": "ステータス変更後に列・件数が更新されない",
+          "verifications": [
+            {
+              "id": "V4",
+              "method": "E2E主要フロー",
+              "command": "npx playwright test e2e/main-flow.spec.ts"
+            }
+          ]
+        },
+        {
+          "id": "K5",
+          "text": "期限超過判定がタイムゾーン/当日扱いで誤る、done済みも超過扱い",
+          "verifications": [
+            {
+              "id": "V5",
+              "method": "期限超過判定の単体テスト",
+              "command": "npx vitest run src/domain/filter.test.ts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R3",
+      "critical": true,
+      "text": "検索（タイトル/説明）・status/priority/tag/期限超過フィルター・並び替え・複合条件・一括解除・0件表示",
+      "risks": [
+        {
+          "id": "K6",
+          "text": "複合条件がAND結合にならない、大文字小文字差で漏れる、ソートが不安定",
+          "verifications": [
+            {
+              "id": "V6",
+              "method": "検索/フィルター/ソートの単体テスト",
+              "command": "npx vitest run src/domain/filter.test.ts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R4",
+      "critical": true,
+      "text": "ダッシュボード（全/未着手/進行中/完了/期限超過/完了率/優先度別、ステータス別グラフ）。完了率=完了÷全×100、全0件なら0%",
+      "risks": [
+        {
+          "id": "K7",
+          "text": "0件時にNaN/ゼロ除算、丸めの誤り",
+          "verifications": [
+            {
+              "id": "V7",
+              "method": "集計の単体テスト",
+              "command": "npx vitest run src/domain/stats.test.ts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R5",
+      "critical": true,
+      "text": "IndexedDB永続化（更新/再起動後も保持、CRUD毎に保存、初回サンプル、保存失敗時エラー表示、ローディング表示、スキーマバージョン、UIから分離）",
+      "risks": [
+        {
+          "id": "K8",
+          "text": "保存データの消失・初回サンプルが毎回再投入される・壊れたレコードでクラッシュ",
+          "verifications": [
+            {
+              "id": "V8",
+              "method": "fake-indexeddbでリポジトリの単体テスト",
+              "command": "npx vitest run src/storage/taskRepository.test.ts"
+            },
+            {
+              "id": "V8b",
+              "method": "E2E: 再読み込み後の保持",
+              "command": "npx playwright test e2e/main-flow.spec.ts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R6",
+      "critical": true,
+      "text": "JSONエクスポート/インポート（スキーマバージョン含む、検証、不正ファイルのエラー、確認ダイアログ、失敗時は既存データ不変）",
+      "risks": [
+        {
+          "id": "K9",
+          "text": "不正JSON/バージョン不一致/重複IDで既存データが一部壊れる",
+          "verifications": [
+            {
+              "id": "V9",
+              "method": "インポート検証の単体テスト",
+              "command": "npx vitest run src/domain/importExport.test.ts"
+            },
+            {
+              "id": "V9b",
+              "method": "リポジトリのトランザクション単体テスト",
+              "command": "npx vitest run src/storage/taskRepository.test.ts"
+            },
+            {
+              "id": "V9c",
+              "method": "E2E: エクスポート→インポート、不正ファイル",
+              "command": "npx playwright test e2e/import-export.spec.ts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R7",
+      "critical": false,
+      "text": "UI/UX: レスポンシブ(375px以上で横スクロールなし)・ダーク/ライト・ナビ・モーダル編集・通知・キーボード操作・a11y",
+      "risks": [
+        {
+          "id": "K10",
+          "text": "スマホ幅で横スクロール/操作不能、モーダルでフォーカスが逃げる",
+          "verifications": [
+            {
+              "id": "V10",
+              "method": "E2E: モバイル幅とキーボード操作",
+              "command": "npx playwright test e2e/mobile.spec.ts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R8",
+      "critical": true,
+      "text": "PWA（manifest/Service Worker/アイコン/インストール可能）、初回アクセス後のオフライン起動とオフラインCRUD",
+      "risks": [
+        {
+          "id": "K11",
+          "text": "SWがサブパスでassetをキャッシュできずオフライン起動失敗",
+          "verifications": [
+            {
+              "id": "V11",
+              "method": "E2E: オフライン起動とCRUD（本番ビルド+サブパス）",
+              "command": "npx playwright test e2e/offline.spec.ts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R9",
+      "critical": true,
+      "text": "品質: 型チェック・ESLint・Vitest・ビルド・Playwrightが成功。JS未処理エラーなし",
+      "risks": [
+        {
+          "id": "K12",
+          "text": "コンソールに未処理エラー",
+          "verifications": [
+            {
+              "id": "V12",
+              "method": "E2Eでpageerrorを検知して失敗させる",
+              "command": "npx playwright test e2e/main-flow.spec.ts"
+            },
+            {
+              "id": "V12b",
+              "method": "gate全check",
+              "checks": [
+                "typecheck",
+                "lint",
+                "test",
+                "build",
+                "e2e"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R10",
+      "critical": true,
+      "text": "GitHub Actions: PRでinstall/lint/typecheck/unit/build/e2e、mainでチェック→Pagesデプロイ→スモークテスト。サブパスで資産が読める",
+      "risks": [
+        {
+          "id": "K13",
+          "text": "CIがPRで失敗/実行されない",
+          "verifications": [
+            {
+              "id": "V13",
+              "method": "PRの最新CIが成功していることを確認",
+              "command": "node scripts/check-ci.mjs"
+            }
+          ]
+        },
+        {
+          "id": "K14",
+          "text": "Pagesのサブパスで資産404",
+          "verifications": [
+            {
+              "id": "V14",
+              "method": "サブパスbase付き本番ビルドでE2E（全E2Eはpreview /flowboard-workflow-test/ で実行）",
+              "command": "npx playwright test e2e/main-flow.spec.ts"
+            },
+            {
+              "id": "V14b",
+              "method": "main マージ後、公開URLのスモークテスト（deploy workflow）",
+              "manual": "PRマージ後に Deploy ワークフローが成功し https://mikiyasa1122-hey.github.io/flowboard-workflow-test/ が表示されることを確認"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R11",
+      "critical": false,
+      "text": "docs/PLAN.md, PROGRESS.md, NEXT_TASK.md, DECISIONS.md, TEST_REPORT.md を管理し中断再開できる。README/LICENSE(MIT)/サンプルデータ",
+      "risks": [
+        {
+          "id": "K15",
+          "text": "進捗ファイル欠落・不整合で再開位置が分からない",
+          "verifications": [
+            {
+              "id": "V15",
+              "method": "必須ドキュメント存在と見出しの確認",
+              "command": "node scripts/check-docs.mjs"
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "review": {
     "done": false,
     "blocking_findings": 0,

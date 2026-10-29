@@ -12,3 +12,12 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Node / build
+node_modules/
+dist/
+dev-dist/
+*.tsbuildinfo
+playwright-report/
+test-results/
+blob-report/
