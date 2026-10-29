@@ -4,9 +4,9 @@
 
 ## 現在の状態
 
-- 作業ブランチ: `aq-dlc/flowboard`（PR: https://github.com/mikiyasa1122-hey/flowboard-workflow-test/pull/1）
-- 現在のフェーズ: **Phase 5 — main マージ待ち（マージ後に Pages デプロイを確認）**
-- GitHub Pages: 有効化済み（ソース: GitHub Actions）。初回デプロイは PR を main にマージしたときに走る
+- PR #1（`aq-dlc/flowboard`）は main にマージ済み（5a3f8fc）
+- 現在のフェーズ: **全フェーズ完了**
+- GitHub Pages: https://mikiyasa1122-hey.github.io/flowboard-workflow-test/ で公開中（Deploy run 40888663936）
 
 | Phase | 状態 | 確認方法・結果 |
 |---|---|---|
@@ -14,7 +14,7 @@
 | Phase 2 タスク管理 | ✅ 完了 | 単体テスト（task / taskOps）、ブラウザで作成・ステータス変更を確認 |
 | Phase 3 保存・検索・集計 | ✅ 完了 | 単体テスト（filter / stats / importExport / taskRepository）。replaceAll のトランザクション不具合を検出・修正 |
 | Phase 4 UI改善・PWA | ✅ 完了 | E2E（mobile / offline）、ブラウザで 375px・ダークモードを目視確認 |
-| Phase 5 総合テスト・公開 | 🔄 マージ待ち | Vitest 75件・E2E 20件成功、PR の CI 成功（run 40885846919）、独立レビュー指摘（blocking 1・non-blocking 9）対応済み。Pages デプロイのみ未確認 |
+| Phase 5 総合テスト・公開 | ✅ 完了 | Vitest 75件・E2E 20件成功、PR の CI 成功、独立レビュー指摘対応済み。main マージ後の Deploy（品質チェック → Pages → スモークテスト）成功、公開URLをブラウザで表示確認（コンソールエラーなし） |
 
 ## 実装済み
 
@@ -31,4 +31,4 @@
 
 ## 未実装・未確認
 
-- GitHub Pages への実デプロイと公開URLのスモークテスト（main マージ後に Deploy ワークフローで確認）
+- なし（SW 更新バナーは E2E 未自動化。TEST_REPORT.md の既知の問題を参照）

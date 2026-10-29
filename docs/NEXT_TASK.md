@@ -13,12 +13,19 @@ AQ-DLC を使っている場合は `python3 <plugin>/scripts/aqdlc.py status --p
 
 ## 次のタスク
 
-**Phase 5 の仕上げ**
+**全フェーズ完了。** 新しい作業は、この下に項目を追加してから始める。
+
+### Phase 5 の仕上げ（完了）
 
 - [x] E2E（主要フロー・無効入力・インポート/エクスポート・スマホ幅・キーボード・テーマ・オフライン）をローカルで成功させる
 - [x] GitHub Pages を有効化（ソース: GitHub Actions）
 - [x] PR の CI が HEAD で成功していることを確認する
 - [x] 独立レビューの指摘に対応する
 - [x] PR を Ready for review にする
-- [ ] 人間が main にマージ
-- [ ] マージ後: Deploy ワークフロー（品質チェック → Pages → スモークテスト）の成功と公開URLの表示を確認し、PROGRESS.md / TEST_REPORT.md を更新
+- [x] 人間が main にマージ
+- [x] マージ後: Deploy ワークフロー（品質チェック → Pages → スモークテスト）の成功と公開URLの表示を確認し、PROGRESS.md / TEST_REPORT.md を更新
+
+### 改善候補（未着手）
+
+- [ ] SW 更新バナーの E2E（2つのビルドを順に配信して検証）
+- [ ] workbox-build 経由の `npm audit` low 警告が上流で解消されたら依存を更新
