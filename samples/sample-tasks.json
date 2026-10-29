@@ -1,0 +1,79 @@
+{
+  "app": "flowboard",
+  "schemaVersion": 1,
+  "exportedAt": "2026-10-29T00:00:00.000Z",
+  "tasks": [
+    {
+      "id": "a3ffed5f-6f35-429b-adc1-e3c8d87d33c2",
+      "title": "買い物リストを作る",
+      "description": "週末の買い出し用",
+      "status": "todo",
+      "priority": "low",
+      "dueDate": "2026-11-07",
+      "tags": [
+        "家"
+      ],
+      "createdAt": "2026-10-01T09:00:00.000Z",
+      "updatedAt": "2026-10-01T09:30:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "869cf3b5-15cd-46d0-bb61-1e1396c82439",
+      "title": "四半期レポートを提出",
+      "description": "数値を確認してから提出する",
+      "status": "doing",
+      "priority": "high",
+      "dueDate": "2026-11-05",
+      "tags": [
+        "仕事",
+        "レポート"
+      ],
+      "createdAt": "2026-10-01T10:00:00.000Z",
+      "updatedAt": "2026-10-01T10:30:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "8635cc22-6a51-4b40-b399-acadcbcff5c6",
+      "title": "歯医者の予約",
+      "description": "",
+      "status": "todo",
+      "priority": "medium",
+      "dueDate": "2026-11-15",
+      "tags": [
+        "個人"
+      ],
+      "createdAt": "2026-10-01T11:00:00.000Z",
+      "updatedAt": "2026-10-01T11:30:00.000Z",
+      "completedAt": null
+    },
+    {
+      "id": "64ee218a-81dc-4658-908c-e5fe7f4a76a5",
+      "title": "FlowBoard を試す",
+      "description": "インポート機能の動作確認用サンプル",
+      "status": "done",
+      "priority": "medium",
+      "dueDate": null,
+      "tags": [
+        "はじめに"
+      ],
+      "createdAt": "2026-10-01T12:00:00.000Z",
+      "updatedAt": "2026-10-01T12:30:00.000Z",
+      "completedAt": "2026-10-01T12:30:00.000Z"
+    },
+    {
+      "id": "674fc2c3-cbaa-4d19-9cc7-709fc950d337",
+      "title": "読書メモを整理する",
+      "description": "",
+      "status": "todo",
+      "priority": "low",
+      "dueDate": null,
+      "tags": [
+        "個人",
+        "学習"
+      ],
+      "createdAt": "2026-10-01T13:00:00.000Z",
+      "updatedAt": "2026-10-01T13:30:00.000Z",
+      "completedAt": null
+    }
+  ]
+}

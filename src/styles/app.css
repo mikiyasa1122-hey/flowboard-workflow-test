@@ -326,7 +326,7 @@ textarea {
 /* ===== フィルター ===== */
 .filters {
   display: grid;
-  grid-template-columns: minmax(180px, 2fr) repeat(4, minmax(120px, 1fr)) auto;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 10px;
   align-items: end;
   margin-bottom: 16px;
@@ -338,6 +338,10 @@ textarea {
 
 .filters .field {
   margin: 0;
+}
+
+.filters .field-search {
+  grid-column: span 2;
 }
 
 .filters-footer {
@@ -846,16 +850,6 @@ textarea {
   display: none;
 }
 
-@media (max-width: 960px) {
-  .filters {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .filters .field-search {
-    grid-column: 1 / -1;
-  }
-}
-
 @media (max-width: 760px) {
   .app-shell {
     grid-template-columns: minmax(0, 1fr);
@@ -879,6 +873,14 @@ textarea {
 
   .board {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filters .field-search {
+    grid-column: 1 / -1;
   }
 
   .field-row,
