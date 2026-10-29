@@ -1,0 +1,57 @@
+import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react';
+
+export type ToastKind = 'success' | 'error' | 'info';
+
+interface Toast {
+  id: number;
+  kind: ToastKind;
+  message: string;
+}
+
+interface ToastApi {
+  notify(kind: ToastKind, message: string): void;
+}
+
+const ToastContext = createContext<ToastApi | null>(null);
+
+const DURATION_MS: Record<ToastKind, number> = { success: 3000, info: 4000, error: 8000 };
+
+export function ToastProvider({ children }: { children: ReactNode }) {
+  const [toasts, setToasts] = useState<Toast[]>([]);
+  const nextId = useRef(1);
+
+  const dismiss = useCallback((id: number) => setToasts((list) => list.filter((t) => t.id !== id)), []);
+
+  const notify = useCallback(
+    (kind: ToastKind, message: string) => {
+      const id = nextId.current++;
+      setToasts((list) => [...list.slice(-3), { id, kind, message }]);
+      window.setTimeout(() => dismiss(id), DURATION_MS[kind]);
+    },
+    [dismiss],
+  );
+
+  const api = useMemo(() => ({ notify }), [notify]);
+
+  return (
+    <ToastContext.Provider value={api}>
+      {children}
+      <div className="toasts" aria-live="polite" aria-relevant="additions">
+        {toasts.map((t) => (
+          <div key={t.id} className={`toast toast-${t.kind}`} role={t.kind === 'error' ? 'alert' : 'status'}>
+            <span>{t.message}</span>
+            <button type="button" className="icon-button" aria-label="通知を閉じる" onClick={() => dismiss(t.id)}>
+              ×
+            </button>
+          </div>
+        ))}
+      </div>
+    </ToastContext.Provider>
+  );
+}
+
+export function useToast(): ToastApi {
+  const api = useContext(ToastContext);
+  if (!api) throw new Error('ToastProvider がありません');
+  return api;
+}
