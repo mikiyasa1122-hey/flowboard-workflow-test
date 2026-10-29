@@ -1,4 +1,49 @@
 {
   "_note": "プロジェクト固有の設定。checks は技術スタックを決めたときに登録する。全体設定（~/.aq-dlc/config.json）の値はここで上書きできる。",
-  "checks": []
+  "checks": [
+    {
+      "name": "lint",
+      "command": "npm run lint",
+      "timeout_sec": 300
+    },
+    {
+      "name": "typecheck",
+      "command": "npm run typecheck",
+      "timeout_sec": 300
+    },
+    {
+      "name": "test",
+      "command": "npm test",
+      "timeout_sec": 600
+    },
+    {
+      "name": "build",
+      "command": "npm run build",
+      "timeout_sec": 600
+    },
+    {
+      "name": "e2e",
+      "command": "npx playwright test",
+      "timeout_sec": 900
+    },
+    {
+      "name": "docs",
+      "command": "node scripts/check-docs.mjs",
+      "timeout_sec": 60
+    }
+  ],
+  "gate": {
+    "ignore_dirs": [
+      ".git",
+      ".aq-dlc",
+      ".claude",
+      "node_modules",
+      "dist",
+      "dev-dist",
+      "test-results",
+      "playwright-report",
+      "blob-report",
+      "coverage"
+    ]
+  }
 }

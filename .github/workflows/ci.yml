@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  pull_request:
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  quality:
+    name: Lint / Typecheck / Unit / Build / E2E
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: 1. 依存関係のインストール
+        run: npm ci
+
+      - name: 2. ESLint
+        run: npm run lint
+
+      - name: 3. TypeScript 型チェック
+        run: npm run typecheck
+
+      - name: 4. Vitest 単体テスト
+        run: npm test
+
+      - name: 5. アプリケーションビルド
+        run: npm run build
+
+      - name: Playwright ブラウザのインストール
+        run: npx playwright install --with-deps chromium
+
+      - name: 6. Playwright E2E テスト
+        run: npm run e2e
+
+      - name: E2E レポートの保存（失敗原因の確認用）
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+          if-no-files-found: ignore
