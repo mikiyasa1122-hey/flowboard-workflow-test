@@ -2,7 +2,7 @@
   "run_id": "20261029-2009-flowboard",
   "title": "flowboard",
   "status": "in_progress",
-  "phase": "05_fix",
+  "phase": "06_memory",
   "created": "2026-10-29T20:09:44+09:00",
   "awaiting_human": false,
   "question": "",
@@ -336,145 +336,175 @@
     "blocking_findings": 0,
     "summary": "独立レビュー: blocking 1（R5 保存失敗・読み込み中の検証なし）→ K8b/V8c/V8d を追加し対応。non-blocking 9 件のうち N1〜N9 をすべて対応（N4 は BroadcastChannel で再読み込み、N5 は prompt 型更新）。"
   },
-  "memory_done": false,
+  "memory_done": true,
   "fix_iterations": 1,
   "gate": {
-    "ran_at": "2026-10-29T22:42:51+09:00",
-    "finished_epoch": 1793281371.462226,
-    "stamp": "20261029-224133",
-    "checks_pass": false,
+    "ran_at": "2026-10-29T22:55:48+09:00",
+    "finished_epoch": 1793282148.9021044,
+    "stamp": "20261029-225351",
+    "checks_pass": true,
     "results": {
       "checks": {
         "lint": {
           "pass": true,
           "exit": 0,
-          "sec": 2.76,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-check-lint.log"
+          "sec": 2.9,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-check-lint.log"
         },
         "typecheck": {
           "pass": true,
           "exit": 0,
-          "sec": 2.77,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-check-typecheck.log"
+          "sec": 2.81,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-check-typecheck.log"
         },
         "test": {
           "pass": true,
           "exit": 0,
-          "sec": 1.23,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-check-test.log"
+          "sec": 5.01,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-check-test.log"
         },
         "build": {
           "pass": true,
           "exit": 0,
-          "sec": 5.43,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-check-build.log"
+          "sec": 18.95,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-check-build.log"
         },
         "e2e": {
-          "pass": false,
-          "exit": 1,
-          "sec": 12.62,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-check-e2e.log"
+          "pass": true,
+          "exit": 0,
+          "sec": 19.94,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-check-e2e.log"
         },
         "docs": {
           "pass": true,
           "exit": 0,
-          "sec": 0.09,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-check-docs.log"
+          "sec": 0.11,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-check-docs.log"
         }
       },
       "verifications": {
         "V1": {
           "pass": true,
           "exit": 0,
-          "sec": 1.56,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V1.log"
+          "sec": 1.5,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V1.log"
         },
         "V2": {
           "pass": true,
           "exit": 0,
           "sec": 1.49,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V2.log"
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V2.log"
         },
         "V3": {
           "pass": true,
           "exit": 0,
-          "sec": 4.41,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V3.log"
+          "sec": 4.38,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V3.log"
         },
         "V4": {
           "pass": true,
           "exit": 0,
           "sec": 5.12,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V4.log"
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V4.log"
         },
         "V5": {
           "pass": true,
           "exit": 0,
           "sec": 1.55,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V5.log"
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V5.log"
         },
         "V6": {
           "pass": true,
           "exit": 0,
-          "sec": 1.51,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V6.log"
+          "sec": 1.53,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V6.log"
         },
         "V7": {
           "pass": true,
           "exit": 0,
-          "sec": 1.58,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V7.log"
+          "sec": 1.49,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V7.log"
         },
         "V8": {
           "pass": true,
           "exit": 0,
-          "sec": 1.59,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V8.log"
+          "sec": 1.58,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V8.log"
         },
         "V8b": {
           "pass": true,
           "exit": 0,
-          "sec": 5.21,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V8b.log"
+          "sec": 5.16,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V8b.log"
+        },
+        "V8c": {
+          "pass": true,
+          "exit": 0,
+          "sec": 1.47,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V8c.log"
+        },
+        "V8d": {
+          "pass": true,
+          "exit": 0,
+          "sec": 4.75,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V8d.log"
+        },
+        "V16": {
+          "pass": true,
+          "exit": 0,
+          "sec": 4.14,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V16.log"
         },
         "V9": {
           "pass": true,
           "exit": 0,
-          "sec": 1.57,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V9.log"
+          "sec": 1.49,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V9.log"
         },
         "V9b": {
           "pass": true,
           "exit": 0,
-          "sec": 1.6,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V9b.log"
+          "sec": 1.51,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V9b.log"
         },
         "V9c": {
           "pass": true,
           "exit": 0,
-          "sec": 4.67,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V9c.log"
+          "sec": 4.58,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V9c.log"
+        },
+        "V17": {
+          "pass": true,
+          "exit": 0,
+          "sec": 1.47,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V17.log"
         },
         "V10": {
           "pass": true,
           "exit": 0,
-          "sec": 4.9,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V10.log"
+          "sec": 4.88,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V10.log"
+        },
+        "V18": {
+          "pass": true,
+          "exit": 0,
+          "sec": 4.75,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V18.log"
         },
         "V11": {
           "pass": true,
           "exit": 0,
-          "sec": 4.33,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V11.log"
+          "sec": 4.26,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V11.log"
         },
         "V12": {
           "pass": true,
           "exit": 0,
-          "sec": 5.3,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V12.log"
+          "sec": 5.17,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V12.log"
         },
         "V12b": {
-          "pass": false,
+          "pass": true,
           "via_checks": [
             "typecheck",
             "lint",
@@ -487,14 +517,14 @@
         "V13": {
           "pass": true,
           "exit": 0,
-          "sec": 1.22,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V13.log"
+          "sec": 1.27,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V13.log"
         },
         "V14": {
           "pass": true,
           "exit": 0,
-          "sec": 5.24,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V14.log"
+          "sec": 3.58,
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V14.log"
         },
         "V14b": {
           "pass": false,
@@ -504,10 +534,10 @@
           "pass": true,
           "exit": 0,
           "sec": 0.07,
-          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-224133-verify-V15.log"
+          "log": ".aq-dlc\\runs\\20261029-2009-flowboard\\gate\\20261029-225351-verify-V15.log"
         }
       }
     }
   },
-  "stop_blocks": 14
+  "stop_blocks": 0
 }

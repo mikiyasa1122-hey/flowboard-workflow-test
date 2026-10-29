@@ -17,7 +17,8 @@ AQ-DLC を使っている場合は `python3 <plugin>/scripts/aqdlc.py status --p
 
 - [x] E2E（主要フロー・無効入力・インポート/エクスポート・スマホ幅・キーボード・テーマ・オフライン）をローカルで成功させる
 - [x] GitHub Pages を有効化（ソース: GitHub Actions）
-- [ ] PR の CI が HEAD で成功していることを確認する
-- [ ] 独立レビューの指摘に対応する
-- [ ] PR を Ready for review にする → 人間が main にマージ
+- [x] PR の CI が HEAD で成功していることを確認する
+- [x] 独立レビューの指摘に対応する
+- [x] PR を Ready for review にする
+- [ ] 人間が main にマージ
 - [ ] マージ後: Deploy ワークフロー（品質チェック → Pages → スモークテスト）の成功と公開URLの表示を確認し、PROGRESS.md / TEST_REPORT.md を更新
