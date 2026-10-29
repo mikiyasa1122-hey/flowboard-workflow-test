@@ -47,4 +47,6 @@
   - main マージが人間の担当のため、デプロイ後の確認は manual verification にするしかない。「マージ後に確認する verification」の扱い（PR 作成時点の完了判定から除外する等）を手順に明記してほしい
 
 ## 結果
-（requirement → 証拠 の対応、残った注意点）
+- R1〜R11 すべて gate の verification で PASS（詳細は PR #1 本文の対応表）。V14b は main マージ後の Deploy run 40888663936 成功を確認のうえ、ユーザーが公開URLで動作確認（waived_by: human）
+- 公開URL: https://mikiyasa1122-hey.github.io/flowboard-workflow-test/
+- 残った注意点: SW 更新バナーの E2E 未自動化、npm audit low 4件（ビルド時のみ）

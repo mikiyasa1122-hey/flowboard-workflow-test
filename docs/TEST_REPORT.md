@@ -10,6 +10,12 @@
 | 2026-10-29 | Phase 5（ローカル・AQ-DLC gate） | ✅ | ✅ | ✅ 67/67 | ✅ | ✅ 15/15 | `--repeat-each=2` でも 30/30 |
 | 2026-10-29 | Phase 5（CI run 40882946236, HEAD 13be4a7） | ✅ | ✅ | ✅ | ✅ | ✅ | PR の全ステップ成功 |
 | 2026-10-29 | レビュー対応後（ローカル） | ✅ | ✅ | ✅ 75/75 | ✅ | ✅ 20/20 | 独立レビュー B1・N1〜N9 に対応 |
+| 2026-10-29 | main マージ後 Deploy（run 40888663936, 5a3f8fc） | ✅ | ✅ | ✅ | ✅ | ✅ | Pages 公開 → 公開URLのスモークテスト成功 |
+
+### 公開URLの確認（2026-10-29）
+
+- `node scripts/smoke.mjs https://mikiyasa1122-hey.github.io/flowboard-workflow-test/` 成功（HTML・JS・CSS・manifest・アイコン・sw.js が 200）
+- ブラウザで表示し、ボードとサンプルタスクが出ること、コンソールエラーがないことを確認
 
 ## 単体テスト（Vitest, 75件）
 
@@ -50,5 +56,4 @@
 
 - 「新しいバージョンがあります」バナー（SW 更新）は E2E で自動検証していない（2つのビルドを順に配信する必要があるため）。
 - `npm audit`: low 4件（workbox-build → deepmerge、ビルド時のみ）。DECISIONS.md D3 参照。
-- GitHub Pages への実デプロイと公開URLのスモークテストは、PR を main にマージした後の Deploy ワークフローで確認する（未確認）。
 - ローカル環境メモ: Claude デスクトップアプリ経由で `npx playwright install` すると、ブラウザが AppData の仮想化された場所に入り、アプリ外のプロセスから見えないことがある。
