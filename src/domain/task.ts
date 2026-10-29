@@ -67,12 +67,24 @@ export const taskInputSchema = z.object({
 });
 
 /** 保存されるタスク */
-export const taskSchema = taskInputSchema.extend({
-  id: z.uuid({ error: 'id は UUID である必要があります' }),
-  createdAt: isoDateTime,
-  updatedAt: isoDateTime,
-  completedAt: isoDateTime.nullable().default(null),
-});
+export const taskSchema = taskInputSchema
+  .extend({
+    id: z.uuid({ error: 'id は UUID である必要があります' }),
+    createdAt: isoDateTime,
+    updatedAt: isoDateTime,
+    completedAt: isoDateTime.nullable().default(null),
+  })
+  .superRefine((task, ctx) => {
+    if (task.status === 'done' && task.completedAt === null) {
+      ctx.addIssue({ code: 'custom', path: ['completedAt'], message: '完了したタスクには完了日時が必要です' });
+    }
+    if (task.status !== 'done' && task.completedAt !== null) {
+      ctx.addIssue({ code: 'custom', path: ['completedAt'], message: '未完了のタスクに完了日時があります' });
+    }
+    if (Date.parse(task.updatedAt) < Date.parse(task.createdAt)) {
+      ctx.addIssue({ code: 'custom', path: ['updatedAt'], message: '更新日時が作成日時より前です' });
+    }
+  });
 
 export type TaskInput = z.input<typeof taskInputSchema>;
 export type Task = z.output<typeof taskSchema>;

@@ -60,6 +60,7 @@ function TaskForm({ task, onCancel, onSave, onDelete }: TaskFormProps) {
   const [tagsText, setTagsText] = useState(task?.tags.join(', ') ?? '');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -80,11 +81,14 @@ function TaskForm({ task, onCancel, onSave, onDelete }: TaskFormProps) {
       return;
     }
     setErrors({});
+    setSaveError(null);
     setSaving(true);
     try {
       await onSave(parsed.data, task);
     } catch (error) {
+      // 保存に失敗しても入力内容は残し、ダイアログ内にエラーを出す
       if (error instanceof ValidationError) setErrors(error.fieldErrors());
+      else setSaveError(error instanceof Error ? error.message : String(error));
     } finally {
       setSaving(false);
     }
@@ -193,6 +197,12 @@ function TaskForm({ task, onCancel, onSave, onDelete }: TaskFormProps) {
             <dd>{formatDateTime(task.completedAt)}</dd>
           </div>
         </dl>
+      )}
+
+      {saveError && (
+        <p className="form-error" role="alert">
+          保存できませんでした: {saveError}。入力内容はそのまま残っています。
+        </p>
       )}
 
       <div className="dialog-actions">

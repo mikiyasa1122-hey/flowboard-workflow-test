@@ -17,3 +17,8 @@
 | D13 | 2026-10-29 | ドラッグ＆ドロップは追加機能として HTML5 DnD で実装し、基本操作はステータス選択（キーボード操作可）で行う | 仕様どおり基本操作を優先。DnD はマウス向けの補助 |
 | D14 | 2026-10-29 | CI は `ci.yml`（PR・手動・再利用）と `deploy.yml`（main push：ci.yml 呼び出し → build → deploy → smoke）に分ける | PR と main で同じ品質チェックを使い、成功時のみデプロイするため |
 | D15 | 2026-10-29 | この PC には Node.js がなかったため、ユーザーの承認を得て winget で Node.js 24 LTS を入れた | 開発に必要 |
+| D16 | 2026-10-29 | 他のタブで保存したら `BroadcastChannel('flowboard-sync')` で知らせ、受け取ったタブは IndexedDB から読み込み直す | 独立レビュー N4: 古い一覧のまま put すると他タブの変更を消すため |
+| D17 | 2026-10-29 | Service Worker の更新は `registerType: 'prompt'`。「新しいバージョンがあります」から利用者が選んだときだけ再読み込み | 独立レビュー N5: 自動再読み込みで入力中の内容が消えるため |
+| D18 | 2026-10-29 | 通知は最前面のモーダル `<dialog>` の中に portal で描画する（`src/components/modalStack.ts`） | showModal 中は外側が inert になり、popover で top layer に出しても操作できなかったため |
+| D19 | 2026-10-29 | 保存失敗はダイアログ内に `role=alert` で表示し、入力内容を残す | 独立レビュー B1/N2 |
+| D20 | 2026-10-29 | `taskSchema` で status と completedAt、createdAt と updatedAt の整合性を検証 | 独立レビュー N3: 矛盾したデータのインポートを防ぐ |

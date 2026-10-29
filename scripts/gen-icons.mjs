@@ -29,14 +29,14 @@ function chunk(type, data) {
 }
 
 /** 背景色の上に、カンバンの3列を表す白い角丸バーを描く */
-function drawIcon(size) {
+function drawIcon(size, padRatio = 0.2) {
   const bg = [79, 70, 229];
   const fg = [255, 255, 255];
   const raw = Buffer.alloc((size * 4 + 1) * size);
-  const pad = size * 0.2;
+  const pad = size * padRatio;
   const gap = size * 0.06;
   const colW = (size - pad * 2 - gap * 2) / 3;
-  const heights = [0.6, 0.42, 0.28].map((h) => h * size);
+  const heights = [1, 0.7, 0.47].map((h) => h * (size - pad * 2));
   const top = pad;
   const r = colW * 0.25;
   const inBar = (x, y) => {
@@ -81,10 +81,12 @@ const outputs = [
   ['icons/icon-192.png', 192],
   ['icons/icon-512.png', 512],
   ['apple-touch-icon.png', 180],
+  // maskable は中央80%（セーフゾーン）に収まるよう余白を広くする
+  ['icons/icon-maskable-512.png', 512, 0.3],
 ];
-for (const [file, size] of outputs) {
+for (const [file, size, padRatio] of outputs) {
   const path = join(root, file);
   mkdirSync(dirname(path), { recursive: true });
-  writeFileSync(path, drawIcon(size));
+  writeFileSync(path, drawIcon(size, padRatio));
   console.log(`wrote ${file} (${size}px)`);
 }

@@ -1,4 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
+import { useTopModal } from '../components/modalStack';
 
 export type ToastKind = 'success' | 'error' | 'info';
 
@@ -33,19 +35,25 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   const api = useMemo(() => ({ notify }), [notify]);
 
+  // モーダルが開いている間は外側が操作できない（inert）ため、通知は最前面のダイアログの中に出す
+  const topModal = useTopModal();
+
   return (
     <ToastContext.Provider value={api}>
       {children}
-      <div className="toasts" aria-live="polite" aria-relevant="additions">
-        {toasts.map((t) => (
-          <div key={t.id} className={`toast toast-${t.kind}`} role={t.kind === 'error' ? 'alert' : 'status'}>
-            <span>{t.message}</span>
-            <button type="button" className="icon-button" aria-label="通知を閉じる" onClick={() => dismiss(t.id)}>
-              ×
-            </button>
-          </div>
-        ))}
-      </div>
+      {createPortal(
+        <div className="toasts">
+          {toasts.map((t) => (
+            <div key={t.id} className={`toast toast-${t.kind}`} role={t.kind === 'error' ? 'alert' : 'status'}>
+              <span>{t.message}</span>
+              <button type="button" className="icon-button" aria-label="通知を閉じる" onClick={() => dismiss(t.id)}>
+                ×
+              </button>
+            </div>
+          ))}
+        </div>,
+        topModal ?? document.body,
+      )}
     </ToastContext.Provider>
   );
 }

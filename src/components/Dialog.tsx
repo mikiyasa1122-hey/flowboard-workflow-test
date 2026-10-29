@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { pushModal, removeModal } from './modalStack';
 
 interface DialogProps {
   open: boolean;
@@ -26,6 +27,7 @@ export function Dialog({ open, title, onClose, children, className, describedBy 
     if (open && !dialog.open) {
       returnFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       dialog.showModal();
+      pushModal(dialog);
       // showModal() は最初のフォーカス可能要素（閉じるボタン）にフォーカスするため、
       // data-autofocus を付けた要素があればそちらへ移す
       dialog.querySelector<HTMLElement>('[data-autofocus]')?.focus();
@@ -38,12 +40,16 @@ export function Dialog({ open, title, onClose, children, className, describedBy 
     const dialog = ref.current;
     if (!dialog) return;
     const handleClose = () => {
+      removeModal(dialog);
       const target = returnFocus.current;
       returnFocus.current = null;
       if (target && target.isConnected) target.focus();
     };
     dialog.addEventListener('close', handleClose);
-    return () => dialog.removeEventListener('close', handleClose);
+    return () => {
+      dialog.removeEventListener('close', handleClose);
+      removeModal(dialog);
+    };
   }, []);
 
   return (

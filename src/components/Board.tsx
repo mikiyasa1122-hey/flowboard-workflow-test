@@ -47,8 +47,9 @@ export function Board({ tasks, today, filtered, onOpen, onStatusChange }: BoardP
           >
             <header className="column-header">
               <h2 id={headingId}>{STATUS_LABELS[status]}</h2>
-              <span className="count" aria-label={`${columnTasks.length}件`} data-testid={`count-${status}`}>
-                {columnTasks.length}
+              <span className="count">
+                <span data-testid={`count-${status}`}>{columnTasks.length}</span>
+                <span className="visually-hidden">件</span>
               </span>
             </header>
             {columnTasks.length === 0 ? (

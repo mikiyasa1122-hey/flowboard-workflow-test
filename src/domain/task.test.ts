@@ -82,7 +82,20 @@ describe('taskSchema（保存データ）', () => {
   it('日時は ISO 8601', () => {
     expect(taskSchema.safeParse({ ...validTask, createdAt: '2026-10-01' }).success).toBe(false);
     expect(taskSchema.safeParse({ ...validTask, updatedAt: 'yesterday' }).success).toBe(false);
-    expect(taskSchema.safeParse({ ...validTask, completedAt: '2026-10-02T09:00:00+09:00' }).success).toBe(true);
+    expect(taskSchema.safeParse({ ...validTask, status: 'done', completedAt: '2026-10-02T09:00:00+09:00' }).success).toBe(true);
+  });
+});
+
+describe('taskSchema（項目間の整合性）', () => {
+  it('done には completedAt が必要、done 以外には不要', () => {
+    expect(taskSchema.safeParse({ ...validTask, status: 'done', completedAt: null }).success).toBe(false);
+    expect(taskSchema.safeParse({ ...validTask, status: 'todo', completedAt: '2026-10-02T00:00:00.000Z' }).success).toBe(false);
+    expect(taskSchema.safeParse({ ...validTask, status: 'done', completedAt: '2026-10-02T00:00:00.000Z' }).success).toBe(true);
+  });
+
+  it('updatedAt は createdAt 以降（タイムゾーン表記が違っても時刻で比べる）', () => {
+    expect(taskSchema.safeParse({ ...validTask, updatedAt: '2026-09-30T23:59:59.000Z' }).success).toBe(false);
+    expect(taskSchema.safeParse({ ...validTask, updatedAt: '2026-10-01T09:00:00+09:00' }).success).toBe(true);
   });
 });
 

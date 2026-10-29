@@ -7,7 +7,8 @@ import { FilterBar } from './components/FilterBar';
 import { TaskModal } from './components/TaskModal';
 import { collectTags, DEFAULT_CRITERIA, filterTasks, isFiltered, sortTasks, toLocalDateString, type FilterCriteria } from './domain/filter';
 import { computeStats } from './domain/stats';
-import { STATUS_LABELS, ValidationError, type Status, type Task, type TaskInput } from './domain/task';
+import { STATUS_LABELS, type Status, type Task, type TaskInput } from './domain/task';
+import { useUpdateAvailable } from './pwa';
 import { useOnline, useTheme } from './state/environment';
 import { useTaskStore } from './state/useTaskStore';
 import { useToast } from './state/toast';
@@ -32,7 +33,10 @@ function isTyping(target: EventTarget | null): boolean {
 function useHashView(): View {
   const [view, setView] = useState<View>(() => viewFromHash(window.location.hash));
   useEffect(() => {
-    const onHash = () => setView(viewFromHash(window.location.hash));
+    // "#/..." 以外（スキップリンクの #main など）は画面遷移として扱わない
+    const onHash = () => {
+      if (window.location.hash === '' || window.location.hash.startsWith('#/')) setView(viewFromHash(window.location.hash));
+    };
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
@@ -56,6 +60,7 @@ export function App({ repository }: { repository: TaskRepository }) {
   const today = useToday();
   const [theme, toggleTheme] = useTheme();
   const online = useOnline();
+  const [updateAvailable, applyUpdate] = useUpdateAvailable();
   const [editing, setEditing] = useState<Task | 'new' | null>(null);
   const [confirm, setConfirm] = useState<ConfirmRequest | null>(null);
   const [rawCriteria, setCriteria] = useState<FilterCriteria>(DEFAULT_CRITERIA);
@@ -104,20 +109,16 @@ export function App({ repository }: { repository: TaskRepository }) {
     return () => window.removeEventListener('keydown', onKey);
   }, [openNew, view]);
 
+  // 失敗時の例外は TaskModal に返し、ダイアログ内に表示する（入力内容を失わない）
   const save = async (input: TaskInput, existing: Task | null) => {
-    try {
-      if (existing) {
-        await store.update(existing.id, input);
-        notify('success', 'タスクを保存しました');
-      } else {
-        await store.create(input);
-        notify('success', 'タスクを作成しました');
-      }
-      setEditing(null);
-    } catch (error) {
-      if (error instanceof ValidationError) throw error;
-      notify('error', errorMessage(error));
+    if (existing) {
+      await store.update(existing.id, input);
+      notify('success', 'タスクを保存しました');
+    } else {
+      await store.create(input);
+      notify('success', 'タスクを作成しました');
     }
+    setEditing(null);
   };
 
   const changeStatus = async (task: Task, status: Status) => {
@@ -217,6 +218,14 @@ export function App({ repository }: { repository: TaskRepository }) {
       </header>
 
       <main id="main" className="content" tabIndex={-1}>
+        {updateAvailable && (
+          <div className="update-banner" role="status">
+            <span>新しいバージョンがあります。</span>
+            <button type="button" className="button" onClick={applyUpdate}>
+              更新して再読み込み
+            </button>
+          </div>
+        )}
         {!online && (
           <p className="offline-banner" role="status">
             オフラインです。変更はこの端末に保存され、そのまま使い続けられます。

@@ -42,7 +42,12 @@ export function openDatabase(factory: IDBFactory = indexedDB, name: string = DB_
       if (!db.objectStoreNames.contains(TASKS)) db.createObjectStore(TASKS, { keyPath: 'id' });
       if (!db.objectStoreNames.contains(META)) db.createObjectStore(META, { keyPath: 'key' });
     };
-    request.onsuccess = () => resolve(request.result);
+    request.onsuccess = () => {
+      const db = request.result;
+      // 新しいバージョンを開こうとする別タブを止めないよう、この接続は閉じる
+      db.onversionchange = () => db.close();
+      resolve(db);
+    };
     request.onerror = () => reject(new StorageError('データベースを開けません', { cause: request.error }));
     request.onblocked = () => reject(new StorageError('別のタブがデータベースを使用中です。他のタブを閉じてください'));
   });
@@ -53,6 +58,8 @@ export class IndexedDbTaskRepository implements TaskRepository {
 
   constructor(dbPromise: Promise<IDBDatabase>) {
     this.dbPromise = dbPromise;
+    // 開けなかった場合のエラーは loadOrSeed / 各書き込みで扱う。未処理の reject として報告させない
+    dbPromise.catch(() => undefined);
   }
 
   static open(factory?: IDBFactory, name?: string): IndexedDbTaskRepository {

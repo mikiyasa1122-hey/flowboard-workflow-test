@@ -21,3 +21,6 @@ dev-dist/
 playwright-report/
 test-results/
 blob-report/
+
+# ローカルのプレビュー設定（絶対パスを含む）
+.claude/launch.json

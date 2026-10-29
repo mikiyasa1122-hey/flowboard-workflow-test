@@ -23,7 +23,8 @@ export default defineConfig({
   webServer: {
     command: 'npm run preview',
     url: BASE_URL,
-    reuseExistingServer: !process.env.CI,
+    // 古い preview サーバーを使い回さない（毎回いまの dist を配信する）
+    reuseExistingServer: false,
     timeout: 60_000,
   },
 });

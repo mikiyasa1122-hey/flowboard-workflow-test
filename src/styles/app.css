@@ -231,6 +231,19 @@ textarea {
   outline: none;
 }
 
+.update-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
 .offline-banner {
   margin: 0 0 16px;
   padding: 8px 12px;
@@ -808,6 +821,16 @@ textarea {
 }
 
 /* ===== 通知 ===== */
+.form-error {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
 .toasts {
   position: fixed;
   right: 16px;
