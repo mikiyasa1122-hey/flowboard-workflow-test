@@ -9,10 +9,12 @@ interface DataActionsProps {
   disabled: boolean;
   onReplaceAll: (tasks: Task[]) => Promise<void>;
   onConfirm: (request: ConfirmRequest) => void;
+  /** 同じ画面に複数置くときの data-testid の接頭辞 */
+  testIdPrefix?: string;
 }
 
 /** JSON エクスポート / インポートのボタン */
-export function DataActions({ tasks, disabled, onReplaceAll, onConfirm }: DataActionsProps) {
+export function DataActions({ tasks, disabled, onReplaceAll, onConfirm, testIdPrefix = '' }: DataActionsProps) {
   const fileRef = useRef<HTMLInputElement>(null);
   const { notify } = useToast();
 
@@ -82,7 +84,7 @@ export function DataActions({ tasks, disabled, onReplaceAll, onConfirm }: DataAc
         className="visually-hidden"
         tabIndex={-1}
         aria-label="インポートするJSONファイル"
-        data-testid="import-input"
+        data-testid={`${testIdPrefix}import-input`}
         onChange={onFile}
       />
     </>

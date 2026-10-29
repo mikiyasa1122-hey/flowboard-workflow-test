@@ -8,6 +8,7 @@ import { TaskModal } from './components/TaskModal';
 import { collectTags, DEFAULT_CRITERIA, filterTasks, isFiltered, sortTasks, toLocalDateString, type FilterCriteria } from './domain/filter';
 import { computeStats } from './domain/stats';
 import { STATUS_LABELS, ValidationError, type Status, type Task, type TaskInput } from './domain/task';
+import { useOnline, useTheme } from './state/environment';
 import { useTaskStore } from './state/useTaskStore';
 import { useToast } from './state/toast';
 import type { TaskRepository } from './storage/taskRepository';
@@ -53,6 +54,8 @@ export function App({ repository }: { repository: TaskRepository }) {
   const { notify } = useToast();
   const view = useHashView();
   const today = useToday();
+  const [theme, toggleTheme] = useTheme();
+  const online = useOnline();
   const [editing, setEditing] = useState<Task | 'new' | null>(null);
   const [confirm, setConfirm] = useState<ConfirmRequest | null>(null);
   const [rawCriteria, setCriteria] = useState<FilterCriteria>(DEFAULT_CRITERIA);
@@ -182,6 +185,30 @@ export function App({ repository }: { repository: TaskRepository }) {
       <header className="topbar">
         <h1 className="page-title">{VIEW_TITLES[view]}</h1>
         <div className="topbar-actions">
+          <button
+            type="button"
+            className="button"
+            onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
+            title={theme === 'dark' ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
+          >
+            <span aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
+          </button>
+          <details className="mobile-menu">
+            <summary className="button" aria-label="データメニュー">
+              <span aria-hidden="true">⋯</span>
+            </summary>
+            {/* 項目を選んだらメニューを閉じる */}
+            <div className="mobile-menu-panel" onClick={(e) => e.currentTarget.closest('details')?.removeAttribute('open')}>
+              <DataActions
+                tasks={store.tasks}
+                disabled={!ready}
+                onReplaceAll={store.replaceAll}
+                onConfirm={setConfirm}
+                testIdPrefix="mobile-"
+              />
+            </div>
+          </details>
           <button type="button" className="button button-primary" onClick={openNew} disabled={!ready} aria-keyshortcuts="N">
             ＋<span className="button-label"> 新規タスク</span>
             <span className="visually-hidden">（新規タスク）</span>
@@ -190,6 +217,11 @@ export function App({ repository }: { repository: TaskRepository }) {
       </header>
 
       <main id="main" className="content" tabIndex={-1}>
+        {!online && (
+          <p className="offline-banner" role="status">
+            オフラインです。変更はこの端末に保存され、そのまま使い続けられます。
+          </p>
+        )}
         {store.load.phase === 'loading' && (
           <p className="loading" role="status">
             読み込み中…

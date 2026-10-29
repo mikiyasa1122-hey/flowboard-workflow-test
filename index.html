@@ -8,6 +8,14 @@
     <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
     <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
     <title>FlowBoard</title>
+    <script>
+      // 描画前にテーマを決めて、ちらつきを防ぐ（src/state/environment.ts と同じ規則）
+      try {
+        var t = localStorage.getItem('flowboard-theme');
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>
